@@ -66,14 +66,15 @@ public class MyAdapter extends BaseAdapter {
             }
         });
 
-        holder.checkBox.setChecked(chks[position]);
+
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 chks[position] = isChecked;
+                Log.d("LV", "chk position:" + position);
             }
         });
-
+        holder.checkBox.setChecked(chks[position]);
         return convertView;
     }
     static class ViewHolder
