@@ -41,31 +41,45 @@ public class MyAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, final View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         Log.d("LV", "getView, position:" + position + ", content:" + data[position]);
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(R.layout.myitem, null);
-        TextView tv = (TextView) v.findViewById(R.id.textView);
-        tv.setText(data[position]);
-
-        Button btn = (Button) v.findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
+        ViewHolder holder;
+        if (convertView == null)
+        {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            convertView = inflater.inflate(R.layout.myitem, null);
+            holder = new ViewHolder();
+            holder.tv = (TextView) convertView.findViewById(R.id.textView);
+            holder.btn = (Button) convertView.findViewById(R.id.button);
+            holder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
+            convertView.setTag(holder);
+        }
+        else
+        {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        holder.tv.setText(data[position]);
+        holder.btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, data[position], Toast.LENGTH_SHORT).show();
             }
         });
 
-        CheckBox checkBox = (CheckBox) v.findViewById(R.id.checkBox);
-        checkBox.setChecked(chks[position]);
-
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.checkBox.setChecked(chks[position]);
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 chks[position] = isChecked;
             }
         });
 
-        return v;
+        return convertView;
+    }
+    static class ViewHolder
+    {
+        TextView tv;
+        Button btn;
+        CheckBox checkBox;
     }
 }
